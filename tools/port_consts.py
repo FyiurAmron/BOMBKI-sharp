@@ -170,7 +170,7 @@ def main():
     lines = ["// Literal port of src-pas/refactored/Texts.inc and src-pas/refactored/Rooms.inc.",
              "// String bytes are preserved exactly; see tools/port_consts.py.",
              "",
-             "static partial class Game",
+             "public static partial class Game",
              "{"]
     for ident, value, kind in consts:
         if kind != "string":

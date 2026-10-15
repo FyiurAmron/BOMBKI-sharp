@@ -1,7 +1,7 @@
 // Literal port of src-pas/Texts.inc and src-pas/Rooms.inc.
 // String bytes are preserved exactly; see tools/port_consts.py.
 
-static partial class Game
+public static partial class Game
 {
     public const string TxtFightEngagedEnemy = "WALCZYSZ - <<<<TWOJ WROG MA ";
     public const string TxtFightEngagedYou = "%>>>><<<< A TY MASZ ";
