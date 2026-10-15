@@ -15,7 +15,7 @@ import re
 from collections import deque
 from pathlib import Path
 
-PROJECT = Path(__file__).resolve().parents[1]
+PROJECT = Path(__file__).resolve().parents[2]
 SOURCES = PROJECT / "src-pas" / "refactored"
 OUT = PROJECT / "tests" / "scenarios"
 PROMPT = r"[0-9]+%\.-?[0-9]+>"

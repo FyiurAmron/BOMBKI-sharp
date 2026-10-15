@@ -18,7 +18,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PROJECT = Path(__file__).resolve().parents[1]
+PROJECT = Path(__file__).resolve().parents[2]
 SOURCES = PROJECT / "src-pas" / "refactored"
 UNIT_NAME = "Game"
 STUB = PROJECT / "tests" / "units" / "randstub.c"

@@ -102,10 +102,10 @@ Naming carries no meaning beyond that, so keep it plain and
 consistent:
 
 - `<area>-tour.json` - a generated room-graph walk produced by
-  `tools/gen_tour_scenarios.py`, which derives the route from
+  `tools/python/gen_tour_scenarios.py`, which derives the route from
   the game sources in `src-pas/`.
 - `<what-it-covers>.json` - a targeted scenario, hand-written or
-  produced by a generator such as `tools/gen_level_up_scenario.py`.
+  produced by a generator such as `tools/python/gen_level_up_scenario.py`.
 
 Do not add a `-smoke` suffix: it used to decorate a handful of
 early scenarios, it does not distinguish anything, and it was
@@ -133,7 +133,7 @@ different purposes; do not mix them up.
    Random from the clock, so the executable draws a different
    sequence depending on when it starts; a scenario whose
    outcome depends on a roll then passes on one run and times
-   out on the next. `tools/build_dev_game.py` links
+   out on the next. `tools/python/build_dev_game.py` links
    `tests/units/randstub.c` over the four System PRNG entry
    points, which makes the sequence reproducible and lets a
    scenario pin the one it depends on with the `BOMBKI_SEED`

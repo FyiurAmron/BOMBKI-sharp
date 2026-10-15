@@ -13,7 +13,7 @@ import re
 import sys
 from pathlib import Path
 
-PROJECT = Path(__file__).resolve().parents[1]
+PROJECT = Path(__file__).resolve().parents[2]
 SRC_PAS = PROJECT / "src-pas" / "refactored"
 OUT = PROJECT / "src" / "Bombki" / "Texts.cs"
 
@@ -142,7 +142,7 @@ def main():
             raise ValueError(f"unhandled decl: {decl!r}")
 
     lines = ["// Literal port of src-pas/refactored/Texts.inc and src-pas/refactored/Rooms.inc.",
-             "// String bytes are preserved exactly; see tools/port_consts.py.",
+             "// String bytes are preserved exactly; see tools/python/port_consts.py.",
              "",
              "public static partial class Game",
              "{"]
