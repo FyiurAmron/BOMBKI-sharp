@@ -5,6 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <!-- AssemblySetup compresses Delay timing for in-process unit tests;
+         that ModuleInitializer use is deliberate. -->
+    <NoWarn>CA2255</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
