@@ -7,8 +7,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  style:
+    name: Style gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+
+      - name: Install dotnet-format
+        run: dotnet tool install -g dotnet-format
+
+      - name: Run the style gate
+        run: bash tools/check-style.sh
+
   csharp:
-    name: C# build and behavioral suite
+    name: Linux build and tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
