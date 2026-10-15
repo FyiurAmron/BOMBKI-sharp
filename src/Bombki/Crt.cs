@@ -220,11 +220,20 @@ static class Crt
     public static void EchoNewLine() => Out.Write("\r\n");
     public static void EchoErase() => Out.WriteRaw("\b \b");
 
+    // Test-only stdin hook: when set, ReadLn dequeues scripted lines
+    // instead of reading fd 0 (mirrors the Pascal unit tests reassigning
+    // `input` to a file: no terminal echo). Never set outside unit tests.
+    internal static Queue<string>? TestInput;
+
     // Unix line read: byte-preserving so commands compare like FPC
     // raw bytes. Kernel echo is off (see static init); echoing,
     // including backspace editing, goes through the shared helpers.
-    public static string ReadLn() =>
-        IsWindows ? WindowsTerminal.ReadLine() : UnixReadLn();
+    public static string ReadLn()
+    {
+        if (TestInput is { Count: > 0 })
+            return TestInput.Dequeue();
+        return IsWindows ? WindowsTerminal.ReadLine() : UnixReadLn();
+    }
 
     private static string UnixReadLn()
     {
