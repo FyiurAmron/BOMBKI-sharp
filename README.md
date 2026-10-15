@@ -3,9 +3,9 @@
 # BOMBKI-sharp
 
 This is a test-backed rewrite of the reconstructed original 1999' BOMBKI text
-RPG game. The goal is to use the test-backed Pascal refactoring of the original
-code to create a complete minimal C# implementation - feature-identical
-(including bugs). Bugfix release will follow after porting project is complete.
+RPG game. It used behavior-perfect Pascal refactoring of the original code
+to create a complete minimal C# implementation - feature-identical
+(including bugs).
 
 It is based on extensive work done as part of collaboration on
 https://github.com/rzuf79/bombki , with an explicit approval from the game's
@@ -31,10 +31,6 @@ tl;dr answer:
   with `tests/expect_pty.py --pyte`.
 - Free Pascal (FPC) for building the frozen Pascal reference in `src-pas/`
   (`python3 tools/python/build_dev_game.py`, `tests/pas-conformance.sh`).
-
-## TODO
-- bugfixing (deliberate behavior changes)
-- Godot frontend integration
 
 ## Known port divergences
 
