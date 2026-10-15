@@ -24,6 +24,8 @@ tl;dr answer:
 
 - .NET 11 SDK for building and testing the C# port (`dotnet build`,
   `dotnet test`).
+- `dotnet-format` for the C# formatting gate
+  (`dotnet tool install -g dotnet-format`, checked by `tools/gate.sh`).
 - Python 3 for the analysis, build, and conformance scripts.
 - Optional `pyte` (`python3 -m pip install pyte`) for screen-aware PTY tests
   with `tests/expect_pty.py --pyte`.
