@@ -2,7 +2,7 @@ name: bombki-tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
   workflow_dispatch:
 
@@ -24,4 +24,3 @@ jobs:
 
       - name: Run behavioral suite over the stub binary
         run: dotnet test BombkiSharp.slnx --no-build
->>>>>>> 1cffe4c (ci: drop FPC jobs from pipeline)
