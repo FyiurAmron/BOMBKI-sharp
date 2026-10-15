@@ -8,7 +8,7 @@ using Microsoft.Win32.SafeHandles;
 // Input stays in the inherited canonical+echo mode, whose observable
 // echo matches the reference transcript byte for byte.
 
-static class Crt
+public static class Crt
 {
     private static Stream? _stdin;
     private static Stream Stdin
@@ -52,7 +52,7 @@ static class Crt
     private const uint ISIG = 0x0001;
     private const uint OPOST = 0x0001;
 
-    internal static readonly bool IsWindows = OperatingSystem.IsWindows();
+    public static readonly bool IsWindows = OperatingSystem.IsWindows();
 
     // Test knob, default 1 (real Pascal timing). BOMBKI_DELAY_MULT scales
     // every Delay; 0 skips sleeping entirely, like the FPC dev build's
@@ -256,7 +256,7 @@ static class Crt
 // CR LF and a few real console actions (clear, colors); cursor motion
 // for line advancement is the terminal's own business, not ours.
 
-static class Out
+public static class Out
 {
     private static readonly Encoding Latin1 = Encoding.Latin1;
     private static readonly Stream Stdout = Crt.IsWindows

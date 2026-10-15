@@ -3,7 +3,7 @@ using static Game;
 namespace Bombki.Tests;
 
 // Port of the describe/miniarena/fight/porownanie/heart-drop unit tests
-// from test_przedm.pas. Command-driven procedures use Crt.TestInput.
+// from test_przedm.pas. Command-driven procedures use TestStdin.
 public sealed class UnitsArenaTests
 {
     private static TestStdin FeedStdin(string lines) => TestStdin.Feed(lines);

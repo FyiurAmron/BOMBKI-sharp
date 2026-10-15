@@ -6,7 +6,7 @@ using static Game.TMonster;
 using static Game.TFoe;
 using static Game.TStreetKind;
 
-static class Rooms
+public static class Rooms
 {
     public static void Room0()
     {
