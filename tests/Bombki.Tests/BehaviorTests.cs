@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -57,6 +58,8 @@ public sealed class BehaviorTests
         "living-door-defeat",
         "staruch-gifts",
         "well",
+        "backspace-edit",
+        "escape-keys",
         "bar-fights",
         "bar-intro",
         "cage-14-heart",
@@ -141,7 +144,53 @@ public sealed class BehaviorTests
                 Assert.Fail($"FAIL {name}: {reason}");
             }
         }
+
+        if (name == "escape-keys")
+        {
+            var reason = CheckNoCursorMotion(log);
+            if (reason is not null)
+            {
+                Assert.Fail($"FAIL {name}: {reason}");
+            }
+        }
     }
+
+    // The only escape bytes this scenario may emit are the startup
+    // clear (home + erase display). Anything else starting with ESC
+    // means ignored keys leaked into echo or output and moved the
+    // cursor around.
+    private static string? CheckNoCursorMotion(string logPath)
+    {
+        foreach (var line in File.ReadLines(logPath))
+        {
+            JsonDocument doc;
+            try { doc = JsonDocument.Parse(line); }
+            catch { continue; }
+            using (doc)
+            {
+                var element = doc.RootElement;
+                if (!element.TryGetProperty("event", out var ev) || ev.GetString() != "OUTPUT")
+                    continue;
+                if (!element.TryGetProperty("raw_hex", out var raw))
+                    continue;
+                byte[] bytes;
+                try
+                {
+                    bytes = Convert.FromHexString(raw.GetString() ?? "");
+                }
+                catch { continue; }
+                string text = Encoding.Latin1.GetString(bytes).Replace("\x1b[H\x1b[2J", "");
+                int at = text.IndexOf('\x1b');
+                if (at >= 0)
+                    return $"cursor motion bytes {ToHex(text.Substring(at, Math.Min(8, text.Length - at)))} in output";
+            }
+        }
+
+        return null;
+    }
+
+    private static string ToHex(string value) =>
+        BitConverter.ToString(Encoding.Latin1.GetBytes(value));
 
     private static string? CheckLevelUpDeduction(string logPath)
     {
