@@ -46,11 +46,14 @@ jobs:
       - name: Publish the Linux game binary
         run: dotnet publish src/Bombki/Bombki.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o build/artifacts/linux-x64
 
+      - name: Zip the Linux game binary
+        run: bash tools/zip-dir.sh build/artifacts/linux-x64 build/artifacts/BOMBKI-sharp-linux-x86_64.zip
+
       - name: Upload the Linux game binary
         uses: actions/upload-artifact@v7
         with:
           name: bombki-linux-x64
-          path: build/artifacts/linux-x64/
+          path: build/artifacts/BOMBKI-sharp-linux-x86_64.zip
 
   windows-build:
     name: Windows build
@@ -70,8 +73,123 @@ jobs:
       - name: Publish the Windows game binary
         run: dotnet publish src/Bombki/Bombki.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o build/artifacts/win-x64
 
+      - name: Zip the Windows game binary
+        run: bash tools/zip-dir.sh build/artifacts/win-x64 build/artifacts/BOMBKI-sharp-win-x64.zip
+
       - name: Upload the Windows game binary
         uses: actions/upload-artifact@v7
         with:
           name: bombki-win-x64
-          path: build/artifacts/win-x64/
+          path: build/artifacts/BOMBKI-sharp-win-x64.zip
+
+  # Rolling release: one permanent "latest" release whose assets are
+  # replaced in place on every push to main, so only the newest build is
+  # ever available. A failed build publishes nothing and leaves the
+  # previous release untouched. Same idea as BOMBKI's fpc.yml latest job.
+  latest:
+    name: Latest release
+    needs: [csharp, windows-build]
+    if: >-
+      always() &&
+      needs.csharp.result == 'success' &&
+      needs.windows-build.result == 'success' &&
+      ((github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+       github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    concurrency:
+      # Two main pushes in flight at once must not swap the release's
+      # assets out of order; the newer run waits its turn.
+      group: latest-release
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download Linux build
+        uses: actions/download-artifact@v8
+        with:
+          name: bombki-linux-x64
+          path: dist/linux
+
+      - name: Download Windows build
+        uses: actions/download-artifact@v8
+        with:
+          name: bombki-win-x64
+          path: dist/win
+
+      - name: Verify and stage executables
+        run: |
+          set -e
+          test -s dist/linux/BOMBKI-sharp-linux-x86_64.zip
+          unzip -l dist/linux/BOMBKI-sharp-linux-x86_64.zip | grep -q "Bombki$"
+          test -s dist/win/BOMBKI-sharp-win-x64.zip
+          unzip -l dist/win/BOMBKI-sharp-win-x64.zip | grep -q "Bombki.exe"
+          mv dist/linux/BOMBKI-sharp-linux-x86_64.zip dist/win/BOMBKI-sharp-win-x64.zip dist/
+          rm -rf dist/linux dist/win
+          (cd dist && sha256sum BOMBKI-sharp-linux-x86_64.zip BOMBKI-sharp-win-x64.zip > SHA256SUMS)
+          ls -la dist
+
+      - name: Prune stale assets
+        # Anything on the release that the stage step did not just
+        # write is from an older build or an older name. First run
+        # has no latest release, so there is nothing to prune.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: latest
+        run: |
+          set -e
+          gh release view "$TAG" >/dev/null 2>&1 \
+            || { echo "no $TAG release yet; nothing to prune"; exit 0; }
+          keep=",BOMBKI-sharp-linux-x86_64.zip,BOMBKI-sharp-win-x64.zip,SHA256SUMS,"
+          gh release view "$TAG" --json assets --jq '.assets[].name' | while IFS= read -r name; do
+            case "$keep" in
+              *",$name,"*) ;;
+              *) echo "removing stale asset $name"
+                 gh release delete-asset "$TAG" "$name" --yes ;;
+            esac
+          done
+
+      - name: Publish rolling release
+        working-directory: dist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: latest
+        run: |
+          set -euo pipefail
+          # GitHub keeps the original published_at on an edited release, so
+          # the page's "released N ago" is the first build. Date the notes:
+          # local time for humans, UTC alongside it to stay unambiguous.
+          # The zone name picks CET or CEST on its own; LC_ALL=C keeps the
+          # month name English regardless of the runner locale.
+          TZ_NAME=Europe/Warsaw
+          NOTES="Automated build of ${GITHUB_SHA} at $(TZ=$TZ_NAME LC_ALL=C date +'%Y-%m-%d %H:%M %Z') ($(date -u +'%Y-%m-%dT%H:%M:%SZ'))."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --target "$GITHUB_SHA" --title "$TAG" --notes "$NOTES" --latest
+          else
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "$TAG" --notes "$NOTES" --latest
+          fi
+          # gh release edit --target leaves the tag where it is, so it
+          # would keep pointing at the first published build. Move it.
+          git tag -f "$TAG" "$GITHUB_SHA"
+          git push --force origin "refs/tags/$TAG"
+          echo "tag $TAG -> $(git rev-parse "$TAG")"
+          # Clobbering races GitHub's asset deletion, so retry briefly.
+          upload() {
+            local asset="$1" attempt
+            for attempt in 1 2 3 4 5; do
+              if gh release upload "$TAG" "$asset" --clobber; then
+                return 0
+              fi
+              echo "upload of $asset failed (attempt $attempt), retrying"
+              sleep 10
+            done
+            echo "giving up on $asset"
+            return 1
+          }
+          for asset in BOMBKI-sharp-linux-x86_64.zip BOMBKI-sharp-win-x64.zip \
+                       SHA256SUMS; do
+            upload "$asset"
+          done
+          gh release view "$TAG" --json url,tagName --jq '"published " + .tagName + ": " + .url'
