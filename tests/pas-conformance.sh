@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# pas-conformance.sh -- TP-mode conformance sweep for the BOMBKI
-# game sources (src-pas/refactored/).
+# pas-conformance.sh -- TP-mode conformance sweep for the frozen
+# Pascal reference sources (src-pas/).
 #
 # Compiles the game unit with Free Pascal in Turbo-Pascal mode (-Mtp)
 # and links the BOMBKI wrapper program against it, then checks the

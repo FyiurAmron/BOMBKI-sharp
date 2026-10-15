@@ -2,7 +2,7 @@
 # pre-commit hook -- enforce text hygiene on staged files.
 #
 # Checks (applies repo-wide):
-#   1. no staged change touches _reference/ (read-only ground truth)
+#   1. no staged change touches src-pas/ (read-only ground truth)
 #   2. staged text files end with a newline (EOF)
 #   3. staged text files are LF-only (no CR bytes)
 #   4. no trailing whitespace / \ No newline markers (git diff --cached --check)
@@ -16,9 +16,9 @@
 set -u
 fail=0
 
-# 1. _reference/ must never be staged
-if git diff --cached --name-only | grep -q '^_reference/'; then
-  echo "error: staged change touches _reference/ (read-only ground truth)" >&2
+# 1. src-pas/ must never be staged
+if git diff --cached --name-only | grep -q '^src-pas/'; then
+  echo "error: staged change touches src-pas/ (read-only ground truth)" >&2
   fail=1
 fi
 

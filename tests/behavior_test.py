@@ -64,7 +64,7 @@ SCENARIOS = [
 ]
 
 # The original deducts 725 KUNSZT when leveling 1 -> 2 (reference
-# src-pas/original/BOMBKI.PAS: "if POZIOM = 1 then KUNSZT := KUNSZT - 725"),
+# src-pas/refactored/Game.pas LevelCosts band: level 1 base is 725),
 # while the sheet reports the remaining gap to level 2 (725). With X
 # the prompt KUNSZT on the leveling pass and R the reported residue,
 # X + R == 2 * 725 holds exactly when the deduction is 725; the

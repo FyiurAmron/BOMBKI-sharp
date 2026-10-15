@@ -8,8 +8,8 @@ tests/units/randstub.c over the four System PRNG entry points, so
 the sequence is reproducible and a scenario can pin the seed it
 depends on by passing BOMBKI_SEED through the environment.
 
-Only the development build is affected. The fidelity build, which
-tests/dosemu_scenarios.py drives, keeps the original clock seeding.
+Only the development build is affected. Other harnesses run the same
+sources without the stubbed PRNG and keep the original clock seeding.
 """
 import argparse
 import os
