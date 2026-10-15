@@ -31,7 +31,19 @@ tl;dr answer:
   (`python3 tools/build_dev_game.py`, `tests/pas-conformance.sh`).
 
 ## TODO
-- behavioral (external) test rewrite
-- unit (internal) test rewrite
-- code rewrite (using test results as ground truth)
-- bugfixing
+- bugfixing (deliberate behavior changes)
+- Godot frontend integration
+
+## Known port divergences
+
+Accepted differences from the original, kept until the bugfixing phase:
+
+- Non-numeric `ReadLn(integer)` input yields 0 instead of halting with a
+  runtime error like the original.
+- Extended-key translation is incomplete: arrow/function keys are swallowed
+  rather than mapped the way the original keyboard layer mapped them.
+- Termios constants are Linux values; macOS needs its own set.
+- Redirected stdin on Windows is unsupported; the Windows driver assumes
+  a live console.
+- Startup TICK count is scheduling-dependent, so tick-sensitive assertions
+  must normalize it instead of matching it exactly.
