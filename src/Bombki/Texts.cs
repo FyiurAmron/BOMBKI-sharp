@@ -1,8 +1,4 @@
-// Literal port of src-pas/refactored/Texts.inc and src-pas/refactored/Rooms.inc.
-// String bytes are preserved exactly; see tools/python/port_consts.py.
-
-public static partial class Game
-{
+public static class Texts {
     public const string TxtFightEngagedEnemy = "WALCZYSZ - <<<<TWOJ WROG MA ";
     public const string TxtFightEngagedYou = "%>>>><<<< A TY MASZ ";
     public const string TxtFightEngagedEnd = "% ENERGII>>>>>";
@@ -1072,40 +1068,40 @@ public static partial class Game
     public const int RoomQuit = 193;
     public const int TranceRoom = 1000;
     public const int DeadRoom = 10000;
-    public static readonly string[] TxtRoom5Lines1 = { "", TxtRoom5_01, TxtRoom5_02, TxtRoom5_03 };
-    public static readonly string[] TxtRoom1Lines1 = { "", TxtRoom1_02, TxtShared_04, TxtRoom1_03 };
-    public static readonly string[] TxtRoom4Lines1 = { "", TxtRoom4_05, TxtRoom4_06, TxtRoom4_07, TxtRoom4_08, TxtRoom4_09 };
-    public static readonly string[] TxtRoom11Lines1 = { "", TxtRoom11_02, TxtRoom11_03, TxtShared_04 };
-    public static readonly string[] TxtRoom11Lines2 = { "", TxtShared_13, TxtRoom11_10, TxtRoom11_11 };
-    public static readonly string[] TxtRoom75Lines1 = { "", TxtRoom75_01, TxtRoom75_02, TxtRoom75_03 };
-    public static readonly string[] TxtRoom83Lines1 = { "", TxtRoom83_01, TxtRoom83_02, TxtRoom83_03 };
-    public static readonly string[] TxtRoom100Lines1 = { "", TxtRoom100_05, TxtRoom100_06, TxtRoom100_07, TxtRoom100_08 };
-    public static readonly string[] TxtPlantFightsLines1 = { "", TxtPlantFights_01, TxtPlantFights_02, TxtPlantFights_03, TxtPlantFights_04 };
-    public static readonly string[] TxtKillDogLines1 = { "", TxtKillDog_01, TxtKillDog_02, TxtKillDog_03 };
-    public static readonly string[] TxtDeathLines1 = { "", TxtDeath_01, TxtDeath_02, TxtDeath_03, TxtDeath_04, TxtDeath_05, TxtDeath_06, TxtDeath_07 };
-    public static readonly string[] TxtGeneralStoreShopLines1 = { "", TxtGeneralStoreShop_03, TxtGeneralStoreShop_04, TxtGeneralStoreShop_05 };
-    public static readonly string[] TxtRoom2Lines1 = { "", TxtShared_05, TxtRoom2_04, TxtRoom2_05 };
-    public static readonly string[] TxtRoom3Lines1 = { "", TxtRoom3_01, TxtRoom3_02, TxtRoom3_03 };
-    public static readonly string[] TxtConcertRoomsLines1 = { "", TxtConcertRooms_01, TxtConcertRooms_02, TxtConcertRooms_03 };
-    public static readonly string[] TxtConcertRoomsLines2 = { "", TxtConcertRooms_41, TxtConcertRooms_42, TxtConcertRooms_43 };
-    public static readonly string[] TxtCheckLevelUpLines1 = { "", TxtCheckLevelUp_01, TxtCheckLevelUp_01, TxtCheckLevelUp_01, TxtCheckLevelUp_01 };
-    public static readonly string[] TxtRoom17Lines1 = { "", TxtShared_13, TxtRoom17_03, TxtRoom17_04, TxtRoom17_05 };
-    public static readonly string[] TxtRoom18Lines1 = { "", TxtRoom18_01, TxtRoom18_02, TxtRoom18_03, TxtRoom18_04 };
-    public static readonly string[] TxtRoom76Lines1 = { "", TxtRoom76_02, TxtRoom76_03, TxtRoom76_04 };
-    public static readonly string[] TxtRoom76Lines2 = { "", TxtRoom76_09, TxtRoom76_10, TxtRoom76_11, TxtRoom76_12 };
-    public static readonly string[] TxtRoom80Lines1 = { "", TxtRoom80_01, TxtRoom80_02, TxtRoom80_03 };
-    public static readonly string[] TxtRoom84Lines1 = { "", TxtRoom84_01, TxtRoom84_02, TxtRoom84_03, TxtRoom84_04 };
-    public static readonly string[] TxtRoom88Lines1 = { "", TxtRoom88_01, TxtRoom88_02, TxtRoom88_03, TxtRoom88_04 };
-    public static readonly string[] TxtRoom86Lines1 = { "", TxtRoom86_05, TxtRoom86_06, TxtRoom86_07 };
-    public static readonly string[] TxtRoom86Lines2 = { "", TxtRoom86_08, TxtRoom86_09, TxtRoom86_10, TxtRoom86_11, TxtRoom86_12 };
-    public static readonly string[] TxtRoom101Lines1 = { "", TxtRoom101_01, TxtRoom101_02, TxtRoom101_03 };
-    public static readonly string[] TxtRoom103Lines1 = { "", TxtRoom103_01, TxtRoom103_02, TxtRoom103_03, TxtRoom103_04 };
-    public static readonly string[] TxtShowIntroLines1 = { "", TxtShowIntro_01, TxtShowIntro_02, TxtShowIntro_03, TxtShowIntro_04, TxtShowIntro_05, TxtShowIntro_06, TxtShowIntro_07, TxtShowIntro_08, TxtShowIntro_09, TxtShowIntro_10, TxtShowIntro_11, TxtShowIntro_12, TxtShowIntro_13, TxtShowIntro_14 };
-    public static readonly string[] TxtRoom1Lines2 = { "", TxtShared_05, TxtRoom1_09, TxtRoom1_10, TxtRoom1_11, TxtRoom1_12, TxtRoom1_13, TxtRoom1_14, TxtRoom1_15, TxtRoom1_16, TxtRoom1_17, TxtRoom1_18 };
-    public static readonly string[] TxtUseItemsLines1 = { "", TxtUseItems_03, TxtUseItems_04, TxtUseItems_05, TxtUseItems_06, TxtUseItems_06, TxtUseItems_06, TxtUseItems_07, TxtUseItems_08, TxtUseItems_09, TxtUseItems_10, TxtUseItems_11 };
-    public static readonly string[] TxtUseItemsLines2 = { "", TxtUseItems_17, TxtUseItems_18, TxtUseItems_19, TxtUseItems_20, TxtUseItems_21, TxtUseItems_22, TxtUseItems_17 };
-    public static readonly string[] TxtPlantFightsLines2 = { "", TxtPlantFights_07, TxtPlantFights_08, TxtPlantFights_09, TxtPlantFights_10, TxtPlantFights_11, TxtPlantFights_12 };
-    public static readonly string[] TxtChooseRaceLines1 = { "", TxtChooseRace_03, TxtChooseRace_04, TxtChooseRace_05, TxtChooseRace_06, TxtChooseRace_07, TxtChooseRace_08, TxtChooseRace_09, TxtChooseRace_10, TxtChooseRace_11, TxtChooseRace_12 };
-    public static readonly string[] TxtBakeryShopLines1 = { "", TxtShared_24, TxtBakeryShop_01, TxtBakeryShop_02, TxtBakeryShop_03, TxtBakeryShop_04, TxtBakeryShop_05, TxtBakeryShop_06 };
-    public static readonly string[] TxtMagicShopLines1 = { "", TxtMagicShop_01, TxtMagicShop_02, TxtMagicShop_03, TxtMagicShop_04, TxtMagicShop_05, TxtMagicShop_06, TxtMagicShop_07, TxtMagicShop_08 };
+    public static readonly List<string> TxtRoom5Lines1 = ["", TxtRoom5_01, TxtRoom5_02, TxtRoom5_03];
+    public static readonly List<string> TxtRoom1Lines1 = ["", TxtRoom1_02, TxtShared_04, TxtRoom1_03];
+    public static readonly List<string> TxtRoom4Lines1 = ["", TxtRoom4_05, TxtRoom4_06, TxtRoom4_07, TxtRoom4_08, TxtRoom4_09];
+    public static readonly List<string> TxtRoom11Lines1 = ["", TxtRoom11_02, TxtRoom11_03, TxtShared_04];
+    public static readonly List<string> TxtRoom11Lines2 = ["", TxtShared_13, TxtRoom11_10, TxtRoom11_11];
+    public static readonly List<string> TxtRoom75Lines1 = ["", TxtRoom75_01, TxtRoom75_02, TxtRoom75_03];
+    public static readonly List<string> TxtRoom83Lines1 = ["", TxtRoom83_01, TxtRoom83_02, TxtRoom83_03];
+    public static readonly List<string> TxtRoom100Lines1 = ["", TxtRoom100_05, TxtRoom100_06, TxtRoom100_07, TxtRoom100_08];
+    public static readonly List<string> TxtPlantFightsLines1 = ["", TxtPlantFights_01, TxtPlantFights_02, TxtPlantFights_03, TxtPlantFights_04];
+    public static readonly List<string> TxtKillDogLines1 = ["", TxtKillDog_01, TxtKillDog_02, TxtKillDog_03];
+    public static readonly List<string> TxtDeathLines1 = ["", TxtDeath_01, TxtDeath_02, TxtDeath_03, TxtDeath_04, TxtDeath_05, TxtDeath_06, TxtDeath_07];
+    public static readonly List<string> TxtGeneralStoreShopLines1 = ["", TxtGeneralStoreShop_03, TxtGeneralStoreShop_04, TxtGeneralStoreShop_05];
+    public static readonly List<string> TxtRoom2Lines1 = ["", TxtShared_05, TxtRoom2_04, TxtRoom2_05];
+    public static readonly List<string> TxtRoom3Lines1 = ["", TxtRoom3_01, TxtRoom3_02, TxtRoom3_03];
+    public static readonly List<string> TxtConcertRoomsLines1 = ["", TxtConcertRooms_01, TxtConcertRooms_02, TxtConcertRooms_03];
+    public static readonly List<string> TxtConcertRoomsLines2 = ["", TxtConcertRooms_41, TxtConcertRooms_42, TxtConcertRooms_43];
+    public static readonly List<string> TxtCheckLevelUpLines1 = ["", TxtCheckLevelUp_01, TxtCheckLevelUp_01, TxtCheckLevelUp_01, TxtCheckLevelUp_01];
+    public static readonly List<string> TxtRoom17Lines1 = ["", TxtShared_13, TxtRoom17_03, TxtRoom17_04, TxtRoom17_05];
+    public static readonly List<string> TxtRoom18Lines1 = ["", TxtRoom18_01, TxtRoom18_02, TxtRoom18_03, TxtRoom18_04];
+    public static readonly List<string> TxtRoom76Lines1 = ["", TxtRoom76_02, TxtRoom76_03, TxtRoom76_04];
+    public static readonly List<string> TxtRoom76Lines2 = ["", TxtRoom76_09, TxtRoom76_10, TxtRoom76_11, TxtRoom76_12];
+    public static readonly List<string> TxtRoom80Lines1 = ["", TxtRoom80_01, TxtRoom80_02, TxtRoom80_03];
+    public static readonly List<string> TxtRoom84Lines1 = ["", TxtRoom84_01, TxtRoom84_02, TxtRoom84_03, TxtRoom84_04];
+    public static readonly List<string> TxtRoom88Lines1 = ["", TxtRoom88_01, TxtRoom88_02, TxtRoom88_03, TxtRoom88_04];
+    public static readonly List<string> TxtRoom86Lines1 = ["", TxtRoom86_05, TxtRoom86_06, TxtRoom86_07];
+    public static readonly List<string> TxtRoom86Lines2 = ["", TxtRoom86_08, TxtRoom86_09, TxtRoom86_10, TxtRoom86_11, TxtRoom86_12];
+    public static readonly List<string> TxtRoom101Lines1 = ["", TxtRoom101_01, TxtRoom101_02, TxtRoom101_03];
+    public static readonly List<string> TxtRoom103Lines1 = ["", TxtRoom103_01, TxtRoom103_02, TxtRoom103_03, TxtRoom103_04];
+    public static readonly List<string> TxtShowIntroLines1 = ["", TxtShowIntro_01, TxtShowIntro_02, TxtShowIntro_03, TxtShowIntro_04, TxtShowIntro_05, TxtShowIntro_06, TxtShowIntro_07, TxtShowIntro_08, TxtShowIntro_09, TxtShowIntro_10, TxtShowIntro_11, TxtShowIntro_12, TxtShowIntro_13, TxtShowIntro_14];
+    public static readonly List<string> TxtRoom1Lines2 = ["", TxtShared_05, TxtRoom1_09, TxtRoom1_10, TxtRoom1_11, TxtRoom1_12, TxtRoom1_13, TxtRoom1_14, TxtRoom1_15, TxtRoom1_16, TxtRoom1_17, TxtRoom1_18];
+    public static readonly List<string> TxtUseItemsLines1 = ["", TxtUseItems_03, TxtUseItems_04, TxtUseItems_05, TxtUseItems_06, TxtUseItems_06, TxtUseItems_06, TxtUseItems_07, TxtUseItems_08, TxtUseItems_09, TxtUseItems_10, TxtUseItems_11];
+    public static readonly List<string> TxtUseItemsLines2 = ["", TxtUseItems_17, TxtUseItems_18, TxtUseItems_19, TxtUseItems_20, TxtUseItems_21, TxtUseItems_22, TxtUseItems_17];
+    public static readonly List<string> TxtPlantFightsLines2 = ["", TxtPlantFights_07, TxtPlantFights_08, TxtPlantFights_09, TxtPlantFights_10, TxtPlantFights_11, TxtPlantFights_12];
+    public static readonly List<string> TxtChooseRaceLines1 = ["", TxtChooseRace_03, TxtChooseRace_04, TxtChooseRace_05, TxtChooseRace_06, TxtChooseRace_07, TxtChooseRace_08, TxtChooseRace_09, TxtChooseRace_10, TxtChooseRace_11, TxtChooseRace_12];
+    public static readonly List<string> TxtBakeryShopLines1 = ["", TxtShared_24, TxtBakeryShop_01, TxtBakeryShop_02, TxtBakeryShop_03, TxtBakeryShop_04, TxtBakeryShop_05, TxtBakeryShop_06];
+    public static readonly List<string> TxtMagicShopLines1 = ["", TxtMagicShop_01, TxtMagicShop_02, TxtMagicShop_03, TxtMagicShop_04, TxtMagicShop_05, TxtMagicShop_06, TxtMagicShop_07, TxtMagicShop_08];
 }

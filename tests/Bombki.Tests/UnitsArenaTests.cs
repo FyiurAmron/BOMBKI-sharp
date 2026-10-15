@@ -2,15 +2,12 @@ using static Game;
 
 namespace Bombki.Tests;
 
-// Port of the describe/miniarena/fight/porownanie/heart-drop unit tests
-// from test_przedm.pas. Command-driven procedures use TestStdin.
-public sealed class UnitsArenaTests
-{
-    private static TestStdin FeedStdin(string lines) => TestStdin.Feed(lines);
+public class UnitsArenaTests {
+    static TestStdin FeedStdin(string lines) =>
+        TestStdin.Feed(lines);
 
     [Fact]
-    public void ScenaMessages()
-    {
+    public void ScenaMessages() {
         Session.Room = 1;
         World.Monsters[(int)TMonster.Guitarist] = 1;
         World.Monsters[(int)TMonster.Drummer] = 1;
@@ -21,8 +18,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void TlumMessages()
-    {
+    public void TlumMessages() {
         Session.Room = 1;
         World.Monsters[(int)TMonster.Kid] = 1;
         World.Monsters[(int)TMonster.Lunatic] = 1;
@@ -39,8 +35,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void KtoMessages()
-    {
+    public void KtoMessages() {
         Session.Room = 1;
         World.Monsters[(int)TMonster.Woodworm] = 1;
         World.Monsters[(int)TMonster.Fly] = 1;
@@ -75,8 +70,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void UlSklepMessages()
-    {
+    public void UlSklepMessages() {
         Session.Room = 1;
         World.Monsters[(int)TMonster.Dachshund] = 1;
         World.Monsters[(int)TMonster.Shepherd] = 1;
@@ -93,8 +87,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void BluszczMessages()
-    {
+    public void BluszczMessages() {
         Session.Room = 1;
         World.Monsters[(int)TMonster.Sorrel] = 1;
         World.Monsters[(int)TMonster.Daisy] = 1;
@@ -113,25 +106,21 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void PierdolyTlo()
-    {
-        using (FeedStdin("1"))
-        {
+    public void PierdolyTlo() {
+        using (FeedStdin("1")) {
             Command = "ZMIEN TLO";
             DisplayPrefs();
         }
     }
 
     [Fact]
-    public void Porownanie()
-    {
+    public void Porownanie() {
         Player.Mana = 10;
         using (FeedStdin("DZIK"))
             CompareFoe();
     }
 
-    private static void MiniarenaSetup()
-    {
+    static void MiniarenaSetup() {
         UnitsSeed.Reseed();
         World.Monsters[(int)TMonster.Bacterium] = 33;
         World.Monsters[(int)TMonster.Snail] = 33;
@@ -164,55 +153,46 @@ public sealed class UnitsArenaTests
         Session.Room = 33;
         Player.Stats[(int)TStat.Strength] = 127;
         Player.Stats[(int)TStat.Dexterity] = 127;
-        Player.Energy = 30000; Combat.Fled = 0;
+        Player.Energy = 30000;
+        Combat.Fled = 0;
     }
 
     [Fact]
-    public void MiniarenaSlabo()
-    {
+    public void MiniarenaSlabo() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|"
-            + "ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|MODE"))
+        using (FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|MODE"))
             ArenaMaze();
     }
 
     [Fact]
-    public void MiniarenaMniejslabo()
-    {
+    public void MiniarenaMniejslabo() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|"
-            + "ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|MODE"))
+        using (FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|MODE"))
             ArenaMaze();
     }
 
     [Fact]
-    public void MiniarenaSrednio()
-    {
+    public void MiniarenaSrednio() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|"
-            + "ZABIJ WIELBLAD|ZABIJ STRUS|ZABIJ BOA|ZABIJ BIZON|"
-            + "ZABIJ PANTERA|MODE"))
+        using (FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|ZABIJ WIELBLAD|ZABIJ STRUS|ZABIJ BOA|ZABIJ BIZON|ZABIJ PANTERA|MODE"))
             ArenaMaze();
     }
 
     [Fact]
-    public void MiniarenaTrudno()
-    {
+    public void MiniarenaTrudno() {
         MiniarenaSetup();
         using (FeedStdin("ZABIJ GLADIATOR|ZABIJ WOJOWNIK|ZABIJ TRENER|MODE"))
             ArenaMaze();
     }
 
-    private static void MiniarenaAt(string cmd, short room)
-    {
+    static void MiniarenaAt(string cmd, short room) {
         Session.Room = room;
         using (FeedStdin(cmd))
             ArenaMaze();
     }
 
     [Fact]
-    public void MiniarenaExitNav()
-    {
+    public void MiniarenaExitNav() {
         MiniarenaAt("EXIT|MODE", 33);
         MiniarenaAt("EXIT|MODE", 34);
         MiniarenaAt("EXIT|MODE", 35);
@@ -229,8 +209,7 @@ public sealed class UnitsArenaTests
         MiniarenaAt("ZACHOD", 33);
     }
 
-    private static void FightSetup()
-    {
+    static void FightSetup() {
         UnitsSeed.Reseed();
         Session.Room = 100;
         World.Monsters[(int)TMonster.Drummer] = 100;
@@ -251,65 +230,85 @@ public sealed class UnitsArenaTests
         World.Monsters[(int)TMonster.Grass] = 100;
         Player.Stats[(int)TStat.Strength] = 127;
         Player.Stats[(int)TStat.Dexterity] = 127;
-        Player.Energy = 30000; Combat.Fled = 0;
-        World.DuncanQuest = 0; Player.Money = 10000; Bag.Permit = 100;
+        Player.Energy = 30000;
+        Combat.Fled = 0;
+        World.DuncanQuest = 0;
+        Player.Money = 10000;
+        Bag.Permit = 100;
         Bag.Items[(int)TBagItem.Backpack] = 100;
-        World.Quest = 0; Player.Experience = 0;
+        World.Quest = 0;
+        Player.Experience = 0;
     }
 
     [Fact]
-    public void Fightscena()
-    {
+    public void Fightscena() {
         FightSetup();
-        Command = "ZABIJ PERKUSISTA"; StageFights();
-        Command = "ZABIJ GITARZYSTA"; StageFights();
-        Command = "ZABIJ LIROY"; StageFights();
-        Command = "ZABIJ ORGANISTA"; StageFights();
+        Command = "ZABIJ PERKUSISTA";
+        StageFights();
+        Command = "ZABIJ GITARZYSTA";
+        StageFights();
+        Command = "ZABIJ LIROY";
+        StageFights();
+        Command = "ZABIJ ORGANISTA";
+        StageFights();
     }
 
     [Fact]
-    public void FightbluszczZabij()
-    {
+    public void FightbluszczZabij() {
         FightSetup();
-        Command = "ZABIJ DUNCAN"; PlantFights();
-        Command = "ZABIJ SZCZAW"; PlantFights();
-        Command = "ZABIJ STOKROTKA"; PlantFights();
-        Command = "ZABIJ KONICZYNKA"; PlantFights();
-        Command = "ZABIJ MLECZ"; PlantFights();
-        Command = "ZABIJ DMUCHAWIEC"; PlantFights();
-        Command = "ZABIJ ROZA"; PlantFights();
-        Command = "ZABIJ OSET"; PlantFights();
-        Command = "ZABIJ MALINA"; PlantFights();
-        Command = "ZABIJ AGREST"; PlantFights();
-        Command = "ZABIJ JEZYNA"; PlantFights();
-        Command = "ZABIJ TRAWA"; PlantFights();
+        Command = "ZABIJ DUNCAN";
+        PlantFights();
+        Command = "ZABIJ SZCZAW";
+        PlantFights();
+        Command = "ZABIJ STOKROTKA";
+        PlantFights();
+        Command = "ZABIJ KONICZYNKA";
+        PlantFights();
+        Command = "ZABIJ MLECZ";
+        PlantFights();
+        Command = "ZABIJ DMUCHAWIEC";
+        PlantFights();
+        Command = "ZABIJ ROZA";
+        PlantFights();
+        Command = "ZABIJ OSET";
+        PlantFights();
+        Command = "ZABIJ MALINA";
+        PlantFights();
+        Command = "ZABIJ AGREST";
+        PlantFights();
+        Command = "ZABIJ JEZYNA";
+        PlantFights();
+        Command = "ZABIJ TRAWA";
+        PlantFights();
     }
 
     [Fact]
-    public void FightbluszczShop()
-    {
+    public void FightbluszczShop() {
         FightSetup();
-        Command = "SECRET LISTA"; PlantFights();
-        Command = "KUP DOKUMENT"; PlantFights();
-        Command = "KUP PLECAK"; PlantFights();
+        Command = "SECRET LISTA";
+        PlantFights();
+        Command = "KUP DOKUMENT";
+        PlantFights();
+        Command = "KUP PLECAK";
+        PlantFights();
     }
 
     [Fact]
-    public void FightbluszczDuncan()
-    {
+    public void FightbluszczDuncan() {
         FightSetup();
         World.DuncanQuest = 0;
-        Command = "ROZMAWIAJ DUNCAN"; PlantFights();
+        Command = "ROZMAWIAJ DUNCAN";
+        PlantFights();
         World.DuncanQuest = -125;
-        Command = "ROZMAWIAJ DUNCAN"; PlantFights();
+        Command = "ROZMAWIAJ DUNCAN";
+        PlantFights();
     }
 
-    private static void PorownanieAsk(string monster,
-        int poziom, int sil, int zre, int par, int kop)
-    {
-        using (FeedStdin(monster))
-        {
-            Player.Mana = 10; Player.Level = (sbyte)poziom;
+    static void PorownanieAsk(string monster,
+        int poziom, int sil, int zre, int par, int kop) {
+        using (FeedStdin(monster)) {
+            Player.Mana = 10;
+            Player.Level = (sbyte)poziom;
             Player.Stats[(int)TStat.Strength] = (short)sil;
             Player.Stats[(int)TStat.Dexterity] = (short)zre;
             Skills.Values[(int)TSkill.Parry] = (short)par;
@@ -319,8 +318,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void PorownanieBeasts()
-    {
+    public void PorownanieBeasts() {
         PorownanieAsk("DZIK", 0, 0, 0, 0, 0);
         PorownanieAsk("KUROPATWA", 0, 16, 0, 0, 0);
         PorownanieAsk("SARNA", 0, 19, 0, 0, 0);
@@ -329,8 +327,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void PorownanieBigBeasts()
-    {
+    public void PorownanieBigBeasts() {
         PorownanieAsk("SLON", 0, 0, 0, 0, 0);
         PorownanieAsk("LEW", 0, 16, 0, 0, 0);
         PorownanieAsk("ZYRAFA", 0, 21, 0, 0, 0);
@@ -338,8 +335,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void PorownanieFighters()
-    {
+    public void PorownanieFighters() {
         PorownanieAsk("GLADIATOR", 0, 0, 0, 0, 0);
         PorownanieAsk("WOJOWNIK", 0, 16, 0, 0, 0);
         PorownanieAsk("TRENER", 0, 20, 0, 0, 0);
@@ -349,8 +345,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void PorownanieDrunks()
-    {
+    public void PorownanieDrunks() {
         PorownanieAsk("MINI-BARMAN", 0, 0, 0, 0, 0);
         PorownanieAsk("GRUBAS", 0, 25, 0, 0, 0);
         PorownanieAsk("D.J", 0, 27, 0, 0, 0);
@@ -359,8 +354,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void PorownanieMusicians()
-    {
+    public void PorownanieMusicians() {
         PorownanieAsk("TAKSOWKARZ", 0, 0, 0, 0, 0);
         PorownanieAsk("GITARZYSTA", 0, 23, 0, 0, 0);
         PorownanieAsk("PERKUSISTA", 0, 26, 0, 0, 0);
@@ -369,8 +363,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void PorownanieBluszcz()
-    {
+    public void PorownanieBluszcz() {
         PorownanieAsk("PEDAL", 0, 0, 0, 0, 0);
         PorownanieAsk("PARA", 0, 20, 0, 0, 0);
         PorownanieAsk("MACIEK", 0, 26, 0, 0, 0);
@@ -386,8 +379,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void PorownanieLiroyAndDogs()
-    {
+    public void PorownanieLiroyAndDogs() {
         PorownanieAsk("LIROY", 0, 0, 0, 0, 0);
         PorownanieAsk("LIROY", 0, 28, 0, 0, 0);
         PorownanieAsk("LIROY", 0, 33, 0, 0, 0);
@@ -403,8 +395,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void PorownanieBonusesAndBakteria()
-    {
+    public void PorownanieBonusesAndBakteria() {
         PorownanieAsk("DZIK", 0, 10, 0, 51, 11);
         PorownanieAsk("DZIK", 0, 10, 0, 76, 71);
         Player.Mana = 10;
@@ -413,16 +404,19 @@ public sealed class UnitsArenaTests
         Assert.Equal(15, Player.Mana);
     }
 
-    private static void LootSetup()
-    {
+    static void LootSetup() {
         UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.Heart] = 0;
-        Player.Energy = 30000; Player.Stats[(int)TStat.Strength] = 127;
-        Player.Stats[(int)TStat.Dexterity] = 127; Combat.Fled = 0;
+        Player.Energy = 30000;
+        Player.Stats[(int)TStat.Strength] = 127;
+        Player.Stats[(int)TStat.Dexterity] = 127;
+        Combat.Fled = 0;
         Skills.Values[(int)TSkill.Fleeing] = 0;
-        Skills.Values[(int)TSkill.FleeEnergy] = 0; Player.Mana = 0;
+        Skills.Values[(int)TSkill.FleeEnergy] = 0;
+        Player.Mana = 0;
         Combat.FireballCharges = 0;
-        Combat.PoisonCharges = 0; Combat.PoisonRounds = 0;
+        Combat.PoisonCharges = 0;
+        Combat.PoisonRounds = 0;
         Skills.Values[(int)TSkill.Kick] = 0;
         Skills.Values[(int)TSkill.KickMinMana] = 0;
         Skills.Values[(int)TSkill.KickMaxEnergy] = 0;
@@ -433,8 +427,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void EncounterHeartVeasy()
-    {
+    public void EncounterHeartVeasy() {
         LootSetup();
         for (int i = 1; i <= 160; i++)
             if (Bag.Items[(int)TBagItem.Heart] == 0)
@@ -443,8 +436,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void EncounterHeartEasy()
-    {
+    public void EncounterHeartEasy() {
         LootSetup();
         for (int i = 1; i <= 160; i++)
             if (Bag.Items[(int)TBagItem.Heart] == 0)
@@ -453,8 +445,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void EncounterHeartNeasy()
-    {
+    public void EncounterHeartNeasy() {
         LootSetup();
         for (int i = 1; i <= 160; i++)
             if (Bag.Items[(int)TBagItem.Heart] == 0)
@@ -463,8 +454,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void EncounterHeartTrudno()
-    {
+    public void EncounterHeartTrudno() {
         LootSetup();
         for (int i = 1; i <= 110; i++)
             if (Bag.Items[(int)TBagItem.Heart] == 0)
@@ -473,8 +463,7 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void EncounterHeartBtrudno()
-    {
+    public void EncounterHeartBtrudno() {
         LootSetup();
         for (int i = 1; i <= 150; i++)
             if (Bag.Items[(int)TBagItem.Heart] == 0)
@@ -483,14 +472,14 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void WalkaPotrawkiLearn()
-    {
+    public void WalkaPotrawkiLearn() {
         UnitsSeed.Reseed();
         bool learned = false;
-        for (int i = 1; i <= 800; i++)
-        {
-            Player.Energy = 100; Player.Stats[(int)TStat.Strength] = 127;
-            Player.Stats[(int)TStat.Dexterity] = 127; Player.MaxEnergy = 0;
+        for (int i = 1; i <= 800; i++) {
+            Player.Energy = 100;
+            Player.Stats[(int)TStat.Strength] = 127;
+            Player.Stats[(int)TStat.Dexterity] = 127;
+            Player.MaxEnergy = 0;
             Combat.EnemyEnergy = 0;
             Combat.EnemyStrength = 1;
             Combat.EnemyDexterity = 1;
@@ -499,7 +488,8 @@ public sealed class UnitsArenaTests
             Skills.Values[(int)TSkill.KickMinMana] = 0;
             Skills.Values[(int)TSkill.KickMaxEnergy] = 0;
             Player.Mana = 0;
-            Combat.FireballCharges = 0; Combat.PoisonCharges = 0;
+            Combat.FireballCharges = 0;
+            Combat.PoisonCharges = 0;
             Combat.PoisonRounds = 0;
             Skills.Values[(int)TSkill.Fleeing] = 0;
             Skills.Values[(int)TSkill.FleeEnergy] = 0;
@@ -508,7 +498,8 @@ public sealed class UnitsArenaTests
             Gear.Values[(int)TGearItem.LuckRoll] = 0;
             Gear.Values[(int)TGearItem.Armor] = 0;
             Gear.Values[(int)TGearItem.WornCount] = 0;
-            Player.Energy = 100; Skills.Values[(int)TSkill.Cooking] = 1;
+            Player.Energy = 100;
+            Skills.Values[(int)TSkill.Cooking] = 1;
             Bag.Items[(int)TBagItem.Bigos] = 0;
             DoFight();
             if (Skills.Values[(int)TSkill.Cooking] > 1)
@@ -518,13 +509,13 @@ public sealed class UnitsArenaTests
     }
 
     [Fact]
-    public void WalkaParryLearn()
-    {
+    public void WalkaParryLearn() {
         UnitsSeed.Reseed();
-        for (int i = 1; i <= 60; i++)
-        {
-            Player.Energy = 100; Player.Stats[(int)TStat.Strength] = 127;
-            Player.Stats[(int)TStat.Dexterity] = 127; Player.MaxEnergy = 0;
+        for (int i = 1; i <= 60; i++) {
+            Player.Energy = 100;
+            Player.Stats[(int)TStat.Strength] = 127;
+            Player.Stats[(int)TStat.Dexterity] = 127;
+            Player.MaxEnergy = 0;
             Combat.EnemyEnergy = 3000;
             Combat.EnemyStrength = 5;
             Combat.EnemyDexterity = 1;
@@ -533,7 +524,8 @@ public sealed class UnitsArenaTests
             Skills.Values[(int)TSkill.KickMinMana] = 0;
             Skills.Values[(int)TSkill.KickMaxEnergy] = 0;
             Player.Mana = 0;
-            Combat.FireballCharges = 0; Combat.PoisonCharges = 0;
+            Combat.FireballCharges = 0;
+            Combat.PoisonCharges = 0;
             Combat.PoisonRounds = 0;
             Skills.Values[(int)TSkill.Fleeing] = 0;
             Skills.Values[(int)TSkill.FleeEnergy] = 0;

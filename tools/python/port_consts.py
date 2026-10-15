@@ -141,10 +141,7 @@ def main():
                 continue
             raise ValueError(f"unhandled decl: {decl!r}")
 
-    lines = ["// Literal port of src-pas/refactored/Texts.inc and src-pas/refactored/Rooms.inc.",
-             "// String bytes are preserved exactly; see tools/python/port_consts.py.",
-             "",
-             "public static partial class Game",
+    lines = ["public static class Texts",
              "{"]
     for ident, value, _ in consts:
         if _.strip() == "int":
@@ -153,7 +150,7 @@ def main():
             lines.append(f"    public const string {ident} = {value};")
     for ident, lo, parts in arrays:
         assert lo == 1, f"unexpected lower bound in {ident}"
-        lines.append(f"    public static readonly string[] {ident} = {{ \"\", {', '.join(parts)} }};")
+        lines.append(f'    public static readonly List<string> {ident} = ["", {", ".join(parts)}];')
     lines += ["}", ""]
     OUT.write_text("\n".join(lines), encoding="utf-8", newline="\n")
     print(f"wrote {OUT} ({len(consts)} consts, {len(arrays)} arrays)")
