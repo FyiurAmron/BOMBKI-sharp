@@ -7,7 +7,7 @@ using System.Text;
 // through the shared Out writer, so game text matches Unix exactly;
 // the console renders them per its own code page and VT support.
 
-static class WindowsTerminal
+public static class WindowsTerminal
 {
     public static bool KeyPressed() => Console.KeyAvailable;
 

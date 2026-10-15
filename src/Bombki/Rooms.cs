@@ -6,7 +6,7 @@ using static Game.TMonster;
 using static Game.TFoe;
 using static Game.TStreetKind;
 
-static class Rooms
+public static class Rooms
 {
     public const int RoomAny = -1;
     public const int RoomStart = 0;

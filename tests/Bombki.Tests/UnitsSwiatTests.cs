@@ -3,7 +3,7 @@ using static Game;
 namespace Bombki.Tests;
 
 // Port of tests/units/test_swiat.pas: room procedures driven with
-// scripted stdin (Crt.TestInput, mirroring the Pascal FeedStdin),
+// scripted stdin (TestStdin pipe, mirroring the Pascal FeedStdin),
 // asserting room state instead of terminal output.
 public sealed class UnitsSwiatTests
 {
