@@ -96,6 +96,7 @@ public sealed class UnitsPrzedmCoreTests
     [Fact]
     public void PotworyRanges()
     {
+        UnitsSeed.Reseed();
         SpawnMonsters();
         foreach (TMonster m in new[]
         {
@@ -163,6 +164,7 @@ public sealed class UnitsPrzedmCoreTests
     [Fact]
     public void TarczaAppliesShield()
     {
+        UnitsSeed.Reseed();
         Combat.Damage = 50; Gear.Values[(int)TGearItem.WornCount] = 30;
         Gear.Values[(int)TGearItem.Armor] = 100;
         ShieldBlock();
@@ -172,6 +174,7 @@ public sealed class UnitsPrzedmCoreTests
     [Fact]
     public void TarczaClampsAtZero()
     {
+        UnitsSeed.Reseed();
         Combat.Damage = 10; Gear.Values[(int)TGearItem.WornCount] = 30;
         Gear.Values[(int)TGearItem.Armor] = 100;
         ShieldBlock();

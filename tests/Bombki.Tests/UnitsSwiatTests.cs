@@ -11,6 +11,7 @@ public sealed class UnitsSwiatTests
 
     private static void RoomSetup()
     {
+        UnitsSeed.Reseed();
         Player.Energy = 30000; Player.Experience = 100;
         Player.Stats[(int)TStat.Strength] = 127;
         Player.Stats[(int)TStat.Dexterity] = 127;
