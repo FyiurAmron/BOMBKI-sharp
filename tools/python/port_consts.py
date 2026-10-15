@@ -17,7 +17,7 @@ PROJECT = Path(__file__).resolve().parents[2]
 SRC_PAS = PROJECT / "src-pas" / "refactored"
 OUT = PROJECT / "src" / "Bombki" / "Texts.cs"
 ROOMS_OUT = PROJECT / "src" / "Bombki" / "Rooms.cs"
-ROOMS_HEADER = "static class Rooms\n{\n"
+ROOMS_HEADER = "public static class Rooms {\n"
 ROOM_CONST_LINE = re.compile(r"    public const int \w+ = -?\d+;$")
 
 STRING_RE = re.compile(r"'((?:[^']|'')*)'|#(\d+)")
@@ -167,18 +167,14 @@ def write_rooms_consts(consts):
 def main():
     consts, arrays = parse_decls("Texts.inc")
 
-    lines = ["// Literal port of src-pas/refactored/Texts.inc and src-pas/refactored/Rooms.inc.",
-             "// String bytes are preserved exactly; see tools/python/port_consts.py.",
-             "",
-             "public static partial class Game",
-             "{"]
+    lines = ["public static class Texts {"]
     for ident, value, kind in consts:
         if kind != "string":
             raise ValueError(f"unexpected int const in Texts.inc: {ident}")
         lines.append(f"    public const string {ident} = {value};")
     for ident, lo, parts in arrays:
         assert lo == 1, f"unexpected lower bound in {ident}"
-        lines.append(f"    public static readonly string[] {ident} = {{ \"\", {', '.join(parts)} }};")
+        lines.append(f'    public static readonly List<string> {ident} = ["", {", ".join(parts)}];')
     lines += ["}", ""]
     OUT.write_text("\n".join(lines), encoding="utf-8", newline="\n")
     print(f"wrote {OUT} ({len(consts)} consts, {len(arrays)} arrays)")

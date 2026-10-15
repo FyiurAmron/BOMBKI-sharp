@@ -1,2 +1,2 @@
-﻿Game.DispatchRooms = Rooms.DispatchRoom;
+Game.DispatchRooms = Rooms.DispatchRoom;
 Game.Start();

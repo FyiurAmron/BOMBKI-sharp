@@ -2,13 +2,9 @@ using static Game;
 
 namespace Bombki.Tests;
 
-// Port of the core test_przedm.pas unit tests (MODE, KOMENDY, TRENUJ,
-// POTWORY ranges, TARCZA): deterministic state arithmetic, no stdin.
-public sealed class UnitsPrzedmCoreTests
-{
+public class UnitsPrzedmCoreTests {
     [Fact]
-    public void Mode()
-    {
+    public void Mode() {
         Session.Room = 42;
         EnterTrance();
         Assert.Equal(42, Session.OuterRoom);
@@ -16,90 +12,96 @@ public sealed class UnitsPrzedmCoreTests
     }
 
     [Fact]
-    public void Komendy()
-    {
-        Command = "PN"; ExpandAbbrev();
+    public void Komendy() {
+        Command = "PN";
+        ExpandAbbrev();
         Assert.Equal("POLNOC", Command);
-        Command = "PD"; ExpandAbbrev();
+        Command = "PD";
+        ExpandAbbrev();
         Assert.Equal("POLODNIE", Command);
-        Command = "W"; ExpandAbbrev();
+        Command = "W";
+        ExpandAbbrev();
         Assert.Equal("WSCHOD", Command);
-        Command = "Z"; ExpandAbbrev();
+        Command = "Z";
+        ExpandAbbrev();
         Assert.Equal("ZACHOD", Command);
-        Command = "G"; ExpandAbbrev();
+        Command = "G";
+        ExpandAbbrev();
         Assert.Equal("GORA", Command);
-        Command = "D"; ExpandAbbrev();
+        Command = "D";
+        ExpandAbbrev();
         Assert.Equal("DOL", Command);
-        Command = "E"; ExpandAbbrev();
+        Command = "E";
+        ExpandAbbrev();
         Assert.Equal("EXIT", Command);
-        Command = "M"; ExpandAbbrev();
+        Command = "M";
+        ExpandAbbrev();
         Assert.Equal("MODE", Command);
-        Command = "POLNOC"; ExpandAbbrev();
+        Command = "POLNOC";
+        ExpandAbbrev();
         Assert.Equal("POLNOC", Command);
     }
 
     [Fact]
-    public void TrainSila()
-    {
+    public void TrainSila() {
         Player.Stats[(int)TStat.Strength] = 10;
         Player.Stats[(int)TStat.MaxStrength] = 20;
-        Player.Practice = 10; Command = "TRENUJ SILA";
+        Player.Practice = 10;
+        Command = "TRENUJ SILA";
         HandleTrain();
         Assert.Equal(11, Player.Stats[(int)TStat.Strength]);
         Assert.Equal(7, Player.Practice);
     }
 
     [Fact]
-    public void TrainZrecznosc()
-    {
+    public void TrainZrecznosc() {
         Player.Stats[(int)TStat.Dexterity] = 10;
         Player.Stats[(int)TStat.MaxDexterity] = 20;
-        Player.Practice = 10; Command = "TRENUJ ZRECZNOSC";
+        Player.Practice = 10;
+        Command = "TRENUJ ZRECZNOSC";
         HandleTrain();
         Assert.Equal(11, Player.Stats[(int)TStat.Dexterity]);
         Assert.Equal(8, Player.Practice);
     }
 
     [Fact]
-    public void TrainMadrosc()
-    {
+    public void TrainMadrosc() {
         Player.Stats[(int)TStat.Wisdom] = 10;
         Player.Stats[(int)TStat.MaxWisdom] = 20;
-        Player.Practice = 10; Command = "TRENUJ MADROSC";
+        Player.Practice = 10;
+        Command = "TRENUJ MADROSC";
         HandleTrain();
         Assert.Equal(11, Player.Stats[(int)TStat.Wisdom]);
         Assert.Equal(7, Player.Practice);
     }
 
     [Fact]
-    public void TrainNeedsPracticePoints()
-    {
+    public void TrainNeedsPracticePoints() {
         Player.Stats[(int)TStat.Strength] = 10;
         Player.Stats[(int)TStat.MaxStrength] = 20;
-        Player.Practice = 2; Command = "TRENUJ SILA";
+        Player.Practice = 2;
+        Command = "TRENUJ SILA";
         HandleTrain();
         Assert.Equal(10, Player.Stats[(int)TStat.Strength]);
         Assert.Equal(2, Player.Practice);
     }
 
     [Fact]
-    public void TrainCapsAtMaximum()
-    {
+    public void TrainCapsAtMaximum() {
         Player.Stats[(int)TStat.Strength] = 20;
         Player.Stats[(int)TStat.MaxStrength] = 20;
-        Player.Practice = 10; Command = "TRENUJ SILA";
+        Player.Practice = 10;
+        Command = "TRENUJ SILA";
         HandleTrain();
         Assert.Equal(20, Player.Stats[(int)TStat.Strength]);
         Assert.Equal(10, Player.Practice);
     }
 
     [Fact]
-    public void PotworyRanges()
-    {
+    public void PotworyRanges() {
         UnitsSeed.Reseed();
         SpawnMonsters();
-        foreach (TMonster m in new[]
-        {
+        List<TMonster> beasts = [
             TMonster.Bacterium, TMonster.Snail, TMonster.Beetle,
             TMonster.Cockroach, TMonster.Ant, TMonster.Spider,
             TMonster.Boar, TMonster.Fox, TMonster.Rat,
@@ -109,26 +111,27 @@ public sealed class UnitsPrzedmCoreTests
             TMonster.Ostrich, TMonster.Boa, TMonster.Wolf,
             TMonster.Bison, TMonster.Panther, TMonster.Gladiator,
             TMonster.Warrior, TMonster.Tamer,
-        })
+        ];
+        foreach (TMonster m in beasts)
             Assert.InRange(World.Monsters[(int)m], 33, 57);
         Assert.InRange(World.Monsters[(int)TMonster.Kid], 61, 66);
         Assert.InRange(World.Monsters[(int)TMonster.Reporter], 61, 66);
-        foreach (TMonster m in new[]
-        {
+        List<TMonster> maniacs = [
             TMonster.Lunatic, TMonster.Listener, TMonster.Fan,
             TMonster.Man, TMonster.OldMan,
-        })
+        ];
+        foreach (TMonster m in maniacs)
             Assert.InRange(World.Monsters[(int)m], 61, 67);
-        foreach (TMonster m in new[]
-        {
+        List<TMonster> heavies = [
             TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla,
-        })
+        ];
+        foreach (TMonster m in heavies)
             Assert.InRange(World.Monsters[(int)m], 61, 68);
-        foreach (TMonster m in new[]
-        {
+        List<TMonster> musicians = [
             TMonster.Guitarist, TMonster.Drummer, TMonster.Keyboardist,
             TMonster.Liroy,
-        })
+        ];
+        foreach (TMonster m in musicians)
             Assert.InRange(World.Monsters[(int)m], 70, 72);
         Assert.Equal(67, World.Monsters[(int)TMonster.Minibarman]);
         Assert.Equal(67, World.Monsters[(int)TMonster.Fatso]);
@@ -138,44 +141,44 @@ public sealed class UnitsPrzedmCoreTests
         Assert.Equal(76, World.Monsters[(int)TMonster.Maciek]);
         Assert.Equal(1, World.Door);
         Assert.Equal(1, World.OldElf);
-        foreach (TMonster m in new[]
-        {
+        List<TMonster> dogs = [
             TMonster.Dachshund, TMonster.Shepherd, TMonster.Pooch,
             TMonster.Spaniel, TMonster.Poodle, TMonster.Cabman,
             TMonster.Vendor, TMonster.Sweeper, TMonster.Drunkard,
             TMonster.SickMan,
-        })
+        ];
+        foreach (TMonster m in dogs)
             Assert.InRange(World.Monsters[(int)m], 20, 26);
-        foreach (TMonster m in new[]
-        {
+        List<TMonster> flowers = [
             TMonster.Sorrel, TMonster.Daisy, TMonster.Clover,
             TMonster.SowThistle, TMonster.Dandelion, TMonster.Rose,
             TMonster.Thistle, TMonster.Raspberry,
-        })
+        ];
+        foreach (TMonster m in flowers)
             Assert.InRange(World.Monsters[(int)m], 77, 83);
-        foreach (TMonster m in new[]
-        {
+        List<TMonster> berries = [
             TMonster.Gooseberry, TMonster.Blackberry, TMonster.Grass,
             TMonster.Duncan,
-        })
+        ];
+        foreach (TMonster m in berries)
             Assert.InRange(World.Monsters[(int)m], 77, 84);
     }
 
     [Fact]
-    public void TarczaAppliesShield()
-    {
+    public void TarczaAppliesShield() {
         UnitsSeed.Reseed();
-        Combat.Damage = 50; Gear.Values[(int)TGearItem.WornCount] = 30;
+        Combat.Damage = 50;
+        Gear.Values[(int)TGearItem.WornCount] = 30;
         Gear.Values[(int)TGearItem.Armor] = 100;
         ShieldBlock();
         Assert.Equal(20, Combat.Damage);
     }
 
     [Fact]
-    public void TarczaClampsAtZero()
-    {
+    public void TarczaClampsAtZero() {
         UnitsSeed.Reseed();
-        Combat.Damage = 10; Gear.Values[(int)TGearItem.WornCount] = 30;
+        Combat.Damage = 10;
+        Gear.Values[(int)TGearItem.WornCount] = 30;
         Gear.Values[(int)TGearItem.Armor] = 100;
         ShieldBlock();
         Assert.Equal(0, Combat.Damage);
