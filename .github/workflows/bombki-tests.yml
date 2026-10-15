@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 11.0.x
 
@@ -24,3 +24,36 @@ jobs:
 
       - name: Run behavioral suite over the stub binary
         run: dotnet test BombkiSharp.slnx --no-build
+
+      - name: Publish the Linux game binary
+        run: dotnet publish src/Bombki/Bombki.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o build/artifacts/linux-x64
+
+      - name: Upload the Linux game binary
+        uses: actions/upload-artifact@v7
+        with:
+          name: bombki-linux-x64
+          path: build/artifacts/linux-x64/
+
+  windows-build:
+    name: Windows build
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+
+      - name: Build the solution
+        run: dotnet build BombkiSharp.slnx
+
+      - name: Publish the Windows game binary
+        run: dotnet publish src/Bombki/Bombki.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o build/artifacts/win-x64
+
+      - name: Upload the Windows game binary
+        uses: actions/upload-artifact@v7
+        with:
+          name: bombki-win-x64
+          path: build/artifacts/win-x64/
