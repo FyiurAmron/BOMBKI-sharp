@@ -6,10 +6,7 @@ namespace Bombki.Tests;
 // from test_przedm.pas. Command-driven procedures use Crt.TestInput.
 public sealed class UnitsArenaTests
 {
-    private static void FeedStdin(string lines)
-    {
-        Crt.TestInput = new Queue<string>(lines.Split('|'));
-    }
+    private static TestStdin FeedStdin(string lines) => TestStdin.Feed(lines);
 
     [Fact]
     public void ScenaMessages()
@@ -118,17 +115,19 @@ public sealed class UnitsArenaTests
     [Fact]
     public void PierdolyTlo()
     {
-        FeedStdin("1");
-        Command = "ZMIEN TLO";
-        DisplayPrefs();
+        using (FeedStdin("1"))
+        {
+            Command = "ZMIEN TLO";
+            DisplayPrefs();
+        }
     }
 
     [Fact]
     public void Porownanie()
     {
         Player.Mana = 10;
-        FeedStdin("DZIK");
-        CompareFoe();
+        using (FeedStdin("DZIK"))
+            CompareFoe();
     }
 
     private static void MiniarenaSetup()
@@ -171,43 +170,43 @@ public sealed class UnitsArenaTests
     public void MiniarenaSlabo()
     {
         MiniarenaSetup();
-        FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|"
-            + "ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|MODE");
-        ArenaMaze();
+        using (FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|"
+            + "ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|MODE"))
+            ArenaMaze();
     }
 
     [Fact]
     public void MiniarenaMniejslabo()
     {
         MiniarenaSetup();
-        FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|"
-            + "ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|MODE");
-        ArenaMaze();
+        using (FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|"
+            + "ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|MODE"))
+            ArenaMaze();
     }
 
     [Fact]
     public void MiniarenaSrednio()
     {
         MiniarenaSetup();
-        FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|"
+        using (FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|"
             + "ZABIJ WIELBLAD|ZABIJ STRUS|ZABIJ BOA|ZABIJ BIZON|"
-            + "ZABIJ PANTERA|MODE");
-        ArenaMaze();
+            + "ZABIJ PANTERA|MODE"))
+            ArenaMaze();
     }
 
     [Fact]
     public void MiniarenaTrudno()
     {
         MiniarenaSetup();
-        FeedStdin("ZABIJ GLADIATOR|ZABIJ WOJOWNIK|ZABIJ TRENER|MODE");
-        ArenaMaze();
+        using (FeedStdin("ZABIJ GLADIATOR|ZABIJ WOJOWNIK|ZABIJ TRENER|MODE"))
+            ArenaMaze();
     }
 
     private static void MiniarenaAt(string cmd, short room)
     {
         Session.Room = room;
-        FeedStdin(cmd);
-        ArenaMaze();
+        using (FeedStdin(cmd))
+            ArenaMaze();
     }
 
     [Fact]
@@ -306,13 +305,15 @@ public sealed class UnitsArenaTests
     private static void PorownanieAsk(string monster,
         int poziom, int sil, int zre, int par, int kop)
     {
-        FeedStdin(monster);
-        Player.Mana = 10; Player.Level = (sbyte)poziom;
-        Player.Stats[(int)TStat.Strength] = (short)sil;
-        Player.Stats[(int)TStat.Dexterity] = (short)zre;
-        Skills.Values[(int)TSkill.Parry] = (short)par;
-        Skills.Values[(int)TSkill.Kick] = (short)kop;
-        CompareFoe();
+        using (FeedStdin(monster))
+        {
+            Player.Mana = 10; Player.Level = (sbyte)poziom;
+            Player.Stats[(int)TStat.Strength] = (short)sil;
+            Player.Stats[(int)TStat.Dexterity] = (short)zre;
+            Skills.Values[(int)TSkill.Parry] = (short)par;
+            Skills.Values[(int)TSkill.Kick] = (short)kop;
+            CompareFoe();
+        }
     }
 
     [Fact]
@@ -404,9 +405,9 @@ public sealed class UnitsArenaTests
     {
         PorownanieAsk("DZIK", 0, 10, 0, 51, 11);
         PorownanieAsk("DZIK", 0, 10, 0, 76, 71);
-        FeedStdin("BAKTERIA");
         Player.Mana = 10;
-        CompareFoe();
+        using (FeedStdin("BAKTERIA"))
+            CompareFoe();
         Assert.Equal(15, Player.Mana);
     }
 

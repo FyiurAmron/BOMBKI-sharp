@@ -7,10 +7,7 @@ namespace Bombki.Tests;
 // asserting room state instead of terminal output.
 public sealed class UnitsSwiatTests
 {
-    private static void FeedStdin(string lines)
-    {
-        Crt.TestInput = new Queue<string>(lines.Split('|'));
-    }
+    private static TestStdin FeedStdin(string lines) => TestStdin.Feed(lines);
 
     private static void RoomSetup()
     {
@@ -41,18 +38,20 @@ public sealed class UnitsSwiatTests
     private static void PokojAt(string cmds, short room)
     {
         Session.Room = room;
-        FeedStdin(cmds);
-        switch (room)
+        using (FeedStdin(cmds))
         {
-            case 4: Rooms.Room4(); break;
-            case 11: Rooms.Room11(); break;
-            case 13: Rooms.Room13(); break;
-            case 30: Rooms.Room30(); break;
-            case 60: Rooms.Room60(); break;
-            case 75: Rooms.Room75(); break;
-            case 83: Rooms.Room83(); break;
-            case 100: Rooms.Room100(); break;
-            default: Rooms.PlainRooms(); break;
+            switch (room)
+            {
+                case 4: Rooms.Room4(); break;
+                case 11: Rooms.Room11(); break;
+                case 13: Rooms.Room13(); break;
+                case 30: Rooms.Room30(); break;
+                case 60: Rooms.Room60(); break;
+                case 75: Rooms.Room75(); break;
+                case 83: Rooms.Room83(); break;
+                case 100: Rooms.Room100(); break;
+                default: Rooms.PlainRooms(); break;
+            }
         }
     }
 
@@ -61,8 +60,8 @@ public sealed class UnitsSwiatTests
     {
         RoomSetup();
         Session.Room = 5;
-        FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE");
-        Rooms.Room5();
+        using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE"))
+            Rooms.Room5();
         Assert.Equal(5, Session.Room);
     }
 
@@ -71,8 +70,8 @@ public sealed class UnitsSwiatTests
     {
         RoomSetup();
         Session.Room = 1;
-        FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE");
-        Rooms.Room1();
+        using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE"))
+            Rooms.Room1();
         Assert.Equal(1, Session.Room);
     }
 
