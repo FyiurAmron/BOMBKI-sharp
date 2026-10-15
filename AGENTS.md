@@ -164,6 +164,13 @@ Temporary build and analysis files belong under the project-local
 
 `src-pas/` must never appear in a staged change.
 
+## Skills
+
+Subject knowledge lives in `_skills/<name>/SKILL.md`; load the one
+matching the task. Inventory: `ci` (pipelines), `cs` (C# style),
+`docs` (docs and skills), `godot` (Godot toolchain, future use),
+`repo` (git habits), `yaml` (data-file format).
+
 ## Installing software
 
 - On Windows, prefer portable / temp-only solutions (download-and-extract into
