@@ -332,7 +332,7 @@ static partial class Game
         short tone, step;
         Crt.ClrScr();
         Player.MaxEnergy = 50;
-        WriteLines(TxtShowIntroLines1);
+        WriteLines(TxtShowIntroLines1[1..]);
         tone = 100;
         step = 100;
         do
