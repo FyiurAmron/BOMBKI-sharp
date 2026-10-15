@@ -28,7 +28,7 @@ tl;dr answer:
 - Optional `pyte` (`python3 -m pip install pyte`) for screen-aware PTY tests
   with `tests/expect_pty.py --pyte`.
 - Free Pascal (FPC) for building the frozen Pascal reference in `src-pas/`
-  (`python3 tools/build_dev_game.py`, `tests/pas-conformance.sh`).
+  (`python3 tools/python/build_dev_game.py`, `tests/pas-conformance.sh`).
 
 ## TODO
 - bugfixing (deliberate behavior changes)

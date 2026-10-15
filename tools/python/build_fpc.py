@@ -17,7 +17,7 @@ import tempfile
 from pathlib import Path
 
 
-PROJECT = Path(__file__).resolve().parents[1]
+PROJECT = Path(__file__).resolve().parents[2]
 SOURCES = PROJECT / "src-pas" / "refactored"
 TEMP_ROOT = PROJECT / "build" / "tmp"
 UNIT_NAMES = ("Game", "Rooms")

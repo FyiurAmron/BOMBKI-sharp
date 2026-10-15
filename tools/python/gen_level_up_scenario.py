@@ -27,7 +27,7 @@ import json
 import re
 from pathlib import Path
 
-PROJECT = Path(__file__).resolve().parents[1]
+PROJECT = Path(__file__).resolve().parents[2]
 OUT = PROJECT / "tests" / "scenarios"
 PROMPT = r"[0-9]+%\.-?[0-9]+>"
 

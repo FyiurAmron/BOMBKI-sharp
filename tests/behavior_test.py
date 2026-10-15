@@ -108,7 +108,7 @@ CHECKS = {
 def build_dev_game() -> Path:
     exe = PROJECT_ROOT / "build" / "tmp" / "dev-game" / "BOMBKI"
     if not exe.exists():
-        result = subprocess.run(['python3', 'tools/build_dev_game.py'],
+        result = subprocess.run(['python3', 'tools/python/build_dev_game.py'],
                                 capture_output=True, text=True,
                                 cwd=PROJECT_ROOT)
         if result.returncode != 0:

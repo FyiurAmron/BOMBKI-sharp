@@ -33,7 +33,7 @@ import re
 import sys
 from pathlib import Path
 
-PROJECT = Path(__file__).resolve().parents[1]
+PROJECT = Path(__file__).resolve().parents[2]
 DEFAULT_FILES = ("src-pas/refactored/Game.pas", "src-pas/refactored/Rooms.pas", "src-pas/refactored/BOMBKI.pas")
 
 HEADER = re.compile(r"^(?:procedure|function) \w")
