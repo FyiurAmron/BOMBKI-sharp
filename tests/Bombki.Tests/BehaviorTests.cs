@@ -114,6 +114,9 @@ public sealed class BehaviorTests
             UseShellExecute = false,
         };
         psi.Environment["BOMBKI_SEED"] = Seed;
+        // Compressed timing for suite speed, like the FPC dev build's
+        // Delay stub. Real-timing fidelity runs unset this instead.
+        psi.Environment["BOMBKI_DELAY_MULT"] = "0";
 
         using var process = Process.Start(psi);
         Assert.NotNull(process);

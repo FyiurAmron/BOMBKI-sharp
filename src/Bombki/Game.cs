@@ -217,7 +217,30 @@ static partial class Game
     public static Action DispatchRooms = () => { };
 
     private static Random Rng = new();
-    public static void Randomize() => Rng = new Random();
+
+    // Test knob. Unset BOMBKI_SEED means Pascal Randomize behavior
+    // (clock-seeded, every run differs). A set seed (decimal or 0x hex,
+    // low 32 bits used) makes the draw sequence reproducible, like the
+    // FPC dev build's PRNG stub.
+    public static void Randomize()
+    {
+        string? raw = Environment.GetEnvironmentVariable("BOMBKI_SEED");
+        if (!string.IsNullOrEmpty(raw))
+        {
+            string digits = raw.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
+                ? raw[2..] : raw;
+            int fromBase = raw.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? 16 : 10;
+            try
+            {
+                Rng = new Random(unchecked((int)Convert.ToUInt64(digits, fromBase)));
+                return;
+            }
+            catch (Exception ex) when (ex is FormatException || ex is OverflowException || ex is ArgumentException)
+            {
+            }
+        }
+        Rng = new Random();
+    }
     public static short Roll(int spread) => (short)Rng.Next(spread);
 
     public const int MaxInt = 32767;
