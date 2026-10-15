@@ -1,4 +1,4 @@
-// Literal port of src-pas/Texts.inc and src-pas/Rooms.inc.
+// Literal port of src-pas/refactored/Texts.inc and src-pas/refactored/Rooms.inc.
 // String bytes are preserved exactly; see tools/port_consts.py.
 
 public static partial class Game
