@@ -7,7 +7,7 @@
 
 using System.Text;
 
-static partial class Game
+public static partial class Game
 {
     public enum TFoe
     {
@@ -215,32 +215,77 @@ static partial class Game
 
     public static Action DispatchRooms = () => { };
 
-    private static Random Rng = new();
+    // Deterministic PRNG for test runs. The test oracle (FPC dev build)
+    // replaces System.Random with xorshift64* seeded from BOMBKI_SEED,
+    // so this ports that exact scheme: same state init, same reduction.
+    // Unset BOMBKI_SEED keeps genuine Pascal behavior (clock-seeded,
+    // every run differs); Randomize re-reads the variable every call.
+    private const ulong BombkiDefaultSeed = 0x9E3779B97F4A7C15;
+    private const ulong XorshiftMult = 2685821657736338717;
+    private static ulong _bombkiState = BombkiDefaultSeed;
 
-    // Test knob. Unset BOMBKI_SEED means Pascal Randomize behavior
-    // (clock-seeded, every run differs). A set seed (decimal or 0x hex,
-    // low 32 bits used) makes the draw sequence reproducible, like the
-    // FPC dev build's PRNG stub.
+    private static ulong ParseSeed(string? text)
+    {
+        if (text is null)
+            return 0;
+        int i = 0;
+        while (i < text.Length && (text[i] == ' ' || text[i] == '\t'))
+            i++;
+        ulong numberBase = 10;
+        if (i + 1 < text.Length && text[i] == '0' && (text[i + 1] == 'x' || text[i + 1] == 'X'))
+        {
+            numberBase = 16;
+            i += 2;
+        }
+        ulong value = 0;
+        int digits = 0;
+        for (; i < text.Length; i++)
+        {
+            char c = text[i];
+            ulong digit;
+            if (c >= '0' && c <= '9')
+                digit = (ulong)(c - '0');
+            else if (numberBase == 16 && c >= 'a' && c <= 'f')
+                digit = (ulong)(c - 'a') + 10;
+            else if (numberBase == 16 && c >= 'A' && c <= 'F')
+                digit = (ulong)(c - 'A') + 10;
+            else
+                break;
+            unchecked { value = value * numberBase + digit; }
+            digits++;
+        }
+        return digits == 0 ? 0 : value;
+    }
+
     public static void Randomize()
     {
         string? raw = Environment.GetEnvironmentVariable("BOMBKI_SEED");
-        if (!string.IsNullOrEmpty(raw))
+        if (raw is null)
         {
-            string digits = raw.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
-                ? raw[2..] : raw;
-            int fromBase = raw.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? 16 : 10;
-            try
-            {
-                Rng = new Random(unchecked((int)Convert.ToUInt64(digits, fromBase)));
-                return;
-            }
-            catch (Exception ex) when (ex is FormatException || ex is OverflowException || ex is ArgumentException)
-            {
-            }
+            _bombkiState = (ulong)DateTime.UtcNow.Ticks;
+            return;
         }
-        Rng = new Random();
+        ulong parsed = ParseSeed(raw);
+        _bombkiState = parsed == 0 ? BombkiDefaultSeed : parsed;
     }
-    public static short Roll(int spread) => (short)Rng.Next(spread);
+
+    private static uint NextBelow(uint bound)
+    {
+        ulong x = _bombkiState;
+        x ^= x >> 12;
+        x ^= x << 25;
+        x ^= x >> 27;
+        _bombkiState = x;
+        return (uint)(((x * XorshiftMult) >> 32) % bound);
+    }
+
+    // Random(0) returns 0 without advancing, as FPC documents.
+    public static short Roll(int spread)
+    {
+        if (spread <= 0)
+            return 0;
+        return (short)NextBelow((uint)spread);
+    }
 
     public const int MaxInt = 32767;
     public const int ItemUnit = 10;
@@ -687,6 +732,20 @@ static partial class Game
             SpawnGroup(MonstersOf(TMonster.OldMan), 8, RoomValley);
             SpawnGroup(MonstersOf(TMonster.Reporter), 7, RoomValley);
         } while (!PastLimit(MonstersOf(TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla, TMonster.OldMan, TMonster.Reporter), RoomValley));
+        SpawnGroup(MonstersOf(TMonster.Guitarist, TMonster.Drummer, TMonster.Keyboardist, TMonster.Liroy), 3, RoomStage1);
+        SpawnAt(PubSpawns[1..]);
+        World.Door = 1;
+        World.OldElf = 1;
+        do
+        {
+            SpawnGroup(MonstersOf(TMonster.Sorrel, TMonster.Clover, TMonster.Daisy, TMonster.SowThistle, TMonster.Dandelion,
+                TMonster.Rose, TMonster.Thistle, TMonster.Raspberry, TMonster.Gooseberry, TMonster.Blackberry,
+                TMonster.Grass), 8, RoomIvy1);
+            SpawnGroup(MonstersOf(TMonster.Duncan), 8, RoomIvy1);
+        } while (!((World.Monsters[(int)TMonster.Sorrel] < RoomCavePath) && (World.Monsters[(int)TMonster.Daisy] < RoomCavePath)
+            && (World.Monsters[(int)TMonster.Clover] < RoomCavePath) && (World.Monsters[(int)TMonster.SowThistle] < RoomCavePath)
+            && (World.Monsters[(int)TMonster.Dandelion] < RoomCavePath) && (World.Monsters[(int)TMonster.Rose] < RoomCavePath)
+            && (World.Monsters[(int)TMonster.Thistle] < RoomCavePath) && (World.Monsters[(int)TMonster.Raspberry] < RoomCavePath)));
     }
 
     public static void TrainAttribute(ref short Attribute, ref short MaxAttribute, short MinPractice, short PracticeCost, string cmdForm, string nounForm)
