@@ -321,6 +321,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void GarniturZyskInvariant()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.SpikedSuit] = 50; Bag.Count = 0;
         SuitGain();
         Assert.True(Bag.Items[(int)TBagItem.SpikedSuit] == 50
@@ -331,6 +332,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void PigulkaZyskInvariant()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.TeleportPill] = 50; Bag.Count = 0;
         PillGain();
         Assert.True(Bag.Items[(int)TBagItem.TeleportPill] == 50
@@ -341,6 +343,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void KasetaZyskInvariant()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.Cassette] = 50; Player.MaxEnergy = 0;
         Gear.Values[(int)TGearItem.Armor] = 0; Bag.Count = 0;
         Player.Stats[(int)TStat.Dexterity] = 0;
@@ -359,6 +362,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void ListekZyskInvariant()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.LuckyLeaf] = 50; Bag.Count = 0;
         Player.MaxMana = 0; Session.Room = 20;
         LeafGain();
@@ -371,6 +375,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void ScrollPorZyskInvariant()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.CompareScroll] = 50; Bag.Count = 0;
         Session.Room = 20;
         ScrollGain();
@@ -382,6 +387,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void GarniturZyskGain()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.SpikedSuit] = 100; Bag.Count = 0;
         int i = 0;
         while (Bag.Count == 0 && i < 2000)
@@ -396,6 +402,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void PigulkaZyskGain()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.TeleportPill] = 100; Bag.Count = 0;
         int i = 0;
         while (Bag.Count == 0 && i < 2000)
@@ -410,6 +417,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void KasetaZyskGain()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.Cassette] = 100; Player.MaxEnergy = 0;
         Gear.Values[(int)TGearItem.Armor] = 0; Bag.Count = 0;
         Player.Stats[(int)TStat.Dexterity] = 0; Session.Room = 20;
@@ -429,6 +437,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void ListekZyskGain()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.LuckyLeaf] = 100; Bag.Count = 0;
         Player.MaxMana = 0; Session.Room = 20;
         int i = 0;
@@ -445,6 +454,7 @@ public sealed class UnitsItemsTests
     [Fact]
     public void ScrollPorZyskGain()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.CompareScroll] = 100; Bag.Count = 0;
         Session.Room = 20;
         int i = 0;

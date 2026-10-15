@@ -10,6 +10,7 @@ public sealed class UnitsCombatTests
     private static void WalkaSetup(int maxE, int wrogE, int sil, int wrogSil,
         int zre, int wrogZre, int par, int kop)
     {
+        UnitsSeed.Reseed();
         Player.Energy = 100;
         Skills.Values[(int)TSkill.Parry] = (short)par;
         Skills.Values[(int)TSkill.Kick] = (short)kop;

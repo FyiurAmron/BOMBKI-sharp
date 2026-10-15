@@ -132,6 +132,7 @@ public sealed class UnitsArenaTests
 
     private static void MiniarenaSetup()
     {
+        UnitsSeed.Reseed();
         World.Monsters[(int)TMonster.Bacterium] = 33;
         World.Monsters[(int)TMonster.Snail] = 33;
         World.Monsters[(int)TMonster.Woodworm] = 33;
@@ -230,6 +231,7 @@ public sealed class UnitsArenaTests
 
     private static void FightSetup()
     {
+        UnitsSeed.Reseed();
         Session.Room = 100;
         World.Monsters[(int)TMonster.Drummer] = 100;
         World.Monsters[(int)TMonster.Guitarist] = 100;
@@ -413,6 +415,7 @@ public sealed class UnitsArenaTests
 
     private static void LootSetup()
     {
+        UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.Heart] = 0;
         Player.Energy = 30000; Player.Stats[(int)TStat.Strength] = 127;
         Player.Stats[(int)TStat.Dexterity] = 127; Combat.Fled = 0;
@@ -482,6 +485,7 @@ public sealed class UnitsArenaTests
     [Fact]
     public void WalkaPotrawkiLearn()
     {
+        UnitsSeed.Reseed();
         bool learned = false;
         for (int i = 1; i <= 800; i++)
         {
@@ -516,6 +520,7 @@ public sealed class UnitsArenaTests
     [Fact]
     public void WalkaParryLearn()
     {
+        UnitsSeed.Reseed();
         for (int i = 1; i <= 60; i++)
         {
             Player.Energy = 100; Player.Stats[(int)TStat.Strength] = 127;
