@@ -1,4 +1,4 @@
-// Literal port of src-pas/Rooms.pas. `using static Game` keeps the
+// Literal port of src-pas/refactored/Rooms.pas. `using static Game` keeps the
 // room bodies line-close to the Pascal originals.
 
 using static Game;

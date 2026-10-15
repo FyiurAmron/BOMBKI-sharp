@@ -1,4 +1,4 @@
-// Literal port of src-pas/Game.pas (interface types/state plus the
+// Literal port of src-pas/refactored/Game.pas (interface types/state plus the
 // implementation procedures). Member names stay byte-close to the
 // Pascal originals; only language-forced adaptations differ:
 //   Integer -> short, Shortint -> sbyte, Longint -> int (TP widths);
