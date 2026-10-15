@@ -9,15 +9,16 @@ code to create a complete minimal C# implementation - feature-identical
 
 * `src-pas/` - the frozen refactoring snapshot;
   read-only, never staged (enforced by `.githooks/pre-commit`).
-* `src/` - the game sources under refactor; all code changes happen here.
+* `src/` - the C# implementation sources; all porting work happens here.
 
 ## Functional dir layout
-* `tests\` - all things related to running tests
-* `tests\scenarios` - test scenarios
-* `tools\` - helpers, utils and toolings
-* `build\` - ephemeral build directory
-* `build\tmp` - project-scoped temp directory
-* `docker\` - Dockers for CI and local runs
+* `tests/` - all things related to running tests
+* `tests/scenarios` - PTY test scenarios (also driven from xUnit)
+* `tests/Bombki.Tests` - xUnit behavioral suite over the built stub
+* `tools/` - helpers, utils and toolings
+* `build/` - ephemeral build directory
+* `build/tmp` - project-scoped temp directory
+* `docker/` - reserved for containerized runs (currently empty)
 
 ## Source fidelity and reconstructed names
 
@@ -45,7 +46,7 @@ Files always end with a newline; enforced locally by `.githooks/pre-commit`
 **Strings are fixed.** No user-visible text (WriteLn messages, prompts,
 item names, monster descriptions, level names, combat logs, etc.) may be
 changed, reworded, reordered, or reformatted. The exact byte sequence of
-every string literal in `src/` - the game source and the `texts.inc`
+every string literal in `src-pas/` - the reference source and the `Texts.inc`
 catalog - is part of the behavioral contract;
 `tests/strings_test.py` pins the union against
 `tests/reference_strings.txt`.
@@ -62,8 +63,7 @@ must remain byte-identical to the reference format stored in
 `tests/reference_saves/pliki.tpu.ref`. A dedicated test
 `tests/save_format_test.py` validates this by running a save scenario
 and comparing the emitted `pliki.tpu` byte-for-byte against the stored
-reference. This test must pass on both the refactored native build and,
-when available, the original binary via DOSEMU2.
+reference. This test must pass on the FPC reference (dev) build.
 
 Refactoring is restricted to *internal* structure: control flow,
 helper extraction, variable renaming, dead-code removal, constant

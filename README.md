@@ -22,12 +22,15 @@ tl;dr answer:
 
 ## Setup
 
+- .NET 11 SDK for building and testing the C# port (`dotnet build`,
+  `dotnet test`).
 - Python 3 for the analysis, build, and conformance scripts.
 - Optional `pyte` (`python3 -m pip install pyte`) for screen-aware PTY tests
   with `tests/expect_pty.py --pyte`.
+- Free Pascal (FPC) for building the frozen Pascal reference in `src-pas/`
+  (`python3 tools/build_dev_game.py`, `tests/pas-conformance.sh`).
 
 ## TODO
-- C# bootstrap
 - behavioral (external) test rewrite
 - unit (internal) test rewrite
 - code rewrite (using test results as ground truth)

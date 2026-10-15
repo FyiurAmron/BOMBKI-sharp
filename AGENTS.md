@@ -8,23 +8,18 @@ concrete checks and procedures, not a restatement of the rules.
 
 ## Project shape
 
-The project refactors the game sources in `src/` for code quality while
-preserving behavior *exactly* (bugs included). Byte-identity with the
+The project reimplements the game in `src/` (C#) while preserving
+behavior *exactly* (bugs included). Byte-identity with the
 original binaries is NOT a goal and is checked nowhere; only behavioral
-identity is preserved. FPC (TP mode) is the working toolchain. TP7
-compatibility is wanted, but it is restored and verified only at the final
-stage of the project, gated and fixed if needed then - not during refactor
-work.
-
-`_reference/` holds the frozen reconstruction: read-only ground truth,
-never staged (`.githooks/pre-commit` enforces it).
+identity is preserved. `src-pas/` holds the frozen Pascal reference:
+read-only ground truth, never staged (`.githooks/pre-commit` enforces
+it). FPC (TP mode) builds that reference for behavior comparison.
 
 ## Check tiers
 
 The host-native FPC build is the daily driver: compile, conformance,
 unit-test, and scenario checks all run against it, and their results are
-enough to keep working. DOSEMU2 runtime checks belong to the final-stage
-gate; do not run them during refactor work.
+enough to keep working.
 
 ## Language
 
@@ -58,13 +53,6 @@ instead, except when reproducing a direct quotation verbatim.
   required scenario; tailor the steps and output markers to the behavior under
   test. Synchronize on expected output rather than using fixed sleeps, blind
   input batches, or repeated polling.
-- For DOSBox-X or DOSEMU2 runtime tests, track each process started by the
-  session and bound its runtime. Before yielding or finishing, close every such
-  instance and verify it has exited. Never leave an emulator running for the
-  user or kill unrelated pre-existing instances; orphaned/repeated instances
-  can crash WSL.
-- Leave game sound enabled when it is useful for runtime diagnosis, but do not
-  leave a DOSEMU2 game on its intro screen for long.
 - Verify the worktree, then commit on `dev` and push it when the current
   task is complete; `main` moves per Branch workflow only.
 
@@ -104,9 +92,7 @@ A second, equipped scenario saves with JAKIEUB='SYF', loads, and saves
 again; its post-load output is compared against
 `tests/reference_saves/pliki.tpu.postload.ref` (JAKIEUB restored on
 load). The reference file is updated only when a deliberate format
-change is approved. The test must pass on the refactored native build;
-when the original binary is available via DOSEMU2, the same test should
-be run against it to ensure format parity.
+change is approved. The test must pass on the FPC reference (dev) build.
 
 ## Scenarios
 
@@ -117,7 +103,7 @@ consistent:
 
 - `<area>-tour.json` - a generated room-graph walk produced by
   `tools/gen_tour_scenarios.py`, which derives the route from
-  the game sources in `src/`.
+  the game sources in `src-pas/`.
 - `<what-it-covers>.json` - a targeted scenario, hand-written or
   produced by a generator such as `tools/gen_level_up_scenario.py`.
 
@@ -156,16 +142,15 @@ different purposes; do not mix them up.
    each other. Reach for this whenever a scenario is flaky for
    reasons that are not a genuine bug in the game.
 
-2. **Final-stage fidelity runs.** 100% machine-accurate
-   execution: the genuine TP7 build under DOSEMU2
-   (`tests/dosemu_game.sh`, `tests/expect_pty.py --pyte`),
-   with the real `Delay` timing. This mode belongs to the
-   project final stage, together with the TP7 conformance
-   sweep - not to ordinary refactor work.
+2. **Retired fidelity runs.** Machine-accurate execution used to mean
+   the genuine TP7 build under DOSEMU2 with the real `Delay` timing.
+   That flow was dropped along with the TP7 build; only the fast
+   native mode above remains for the Pascal reference.
 
-So: use the fast native mode for refactor iteration; the
-DOSEMU2 + genuine-TP7 mode is reserved for the final-stage
-gate. Report which mode a result came from.
+The C# port has its own suite: `dotnet test` runs every scenario in
+`tests/scenarios/` against the built stub through the same PTY
+harness (serially, never in parallel). Report which runner a result
+came from.
 
 ## Autonomy
 
@@ -177,8 +162,7 @@ independently.
 Temporary build and analysis files belong under the project-local
 `build/tmp/` directory. Do not use a shared/global `/tmp` location.
 
-`_reference/` must never appear in a staged change (the single squashed
-init commit that established it is the only recorded exception).
+`src-pas/` must never appear in a staged change.
 
 ## Installing software
 
@@ -213,7 +197,7 @@ init commit that established it is the only recorded exception).
   `git diff --check` clean.
 - Hook: enable `.githooks/pre-commit` with `git config core.hooksPath .githooks`
   — enforces newline at EOF, LF-only, no trailing whitespace, and never staging
-  `_reference/`.
+  `src-pas/`.
 
 ## History rewrites
 
