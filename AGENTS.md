@@ -166,7 +166,7 @@ Temporary build and analysis files belong under the project-local
 
 ## Skills
 
-Subject knowledge lives in `_skills/<name>/SKILL.md`; load the one
+Subject knowledge should be available via installed skills; load the one
 matching the task. Inventory: `ci` (pipelines), `cs` (C# style),
 `docs` (docs and skills), `godot` (Godot toolchain, future use),
 `repo` (git habits), `yaml` (data-file format).
